@@ -8,7 +8,17 @@ def mult_comb(a, b, result):
     """Función que multiplica dos señales de entrada a y b y almacena el resultado en la señal result."""
     @always_comb
     def logic():
-        result.next = a * b
+        # Obtener los valores de los factores
+        a_val = a.signed() if a.val[a.min:] else a
+        b_val = b.signed() if b.val[b.min:] else b
+
+        # Realizar la multiplicación
+        result.next = a_val * b_val
+
+        # Convertir el resultado a complemento a dos si es negativo
+        if result.val[result.min] == 1:
+            result.next = ~result + 1
+
     return logic
 
 if __name__ == '__main__':
