@@ -1,0 +1,9 @@
+Bernal Zamora Barrantes: Encargado de la especificación de entrada, responsable de programar las opciones del
+usuario de ingresar los datos en notación decimal, hexadecimal y binario. Responsable del correcto 
+funcionamiento de la entrada reproducida desde consola, con la opción de ingresar los datos requeridos como 
+archivos de configuración de texto.
+Carolina Zúñiga Blanco: Encargada de la generación del archivo por medio de LaTex. Énfasis en lograr que la 
+primera diapositiva indique los valores que se leyeron en la entrada de usuario (operandos,
+cantidad de bits, nombre del archivo de configuración).
+David Pérez Calvo: Encargado de la implementación de bibliotecas para facilitar la programación. Soporte en la
+especificación de entrada y salida, encargado de optimizar el código y colaborar con el estilo Beamer.
