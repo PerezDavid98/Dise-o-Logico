@@ -1,5 +1,10 @@
 import argparse
-
+import mult
+from argparse import ArgumentParser  # importar el módulo ArgumentParser de argparse
+from myhdl import Signal, Simulation, intbv, always_comb  # importar las funciones Signal, Simulation, intbv y always_comb de myhdl
+from reportlab.lib.units import inch  # importar la unidad de medida 'inch' del módulo reportlab.lib.units
+from reportlab.pdfgen import canvas  # importar la función canvas del módulo reportlab.pdfgen
+from reportlab.lib.pagesizes import letter, landscape
 
 # Files
 def read_file(filename):
@@ -65,7 +70,6 @@ def binary_multiplication(a, b):
     a = parse_factor(a)
     b = parse_factor(b)
 
-    print(a, b)
 
     max_len = max(len(a), len(b))
     min_len = min(len(a), len(b))
@@ -98,22 +102,62 @@ def binary_multiplication(a, b):
         else:
             pass
 
-    print(product)
+    return product
 
 
-def init():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--bits", help="Cantidad de bits de los numeros")
-    parser.add_argument("-a", help="Factor 'A' a multiplicar")
-    parser.add_argument("-b", help="Factor 'B' a multiplicar")
-    parser.add_argument("-f", help="Nombre del archivo")
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Perform multiplication operation.')
+    #parser.add_argument('--bits', type=int, help='Number of bits for precision.')
+    parser.add_argument('-a', help='First argument for multiplication.')
+    parser.add_argument('-b', help='Second argument for multiplication.')
     args = parser.parse_args()
 
-    if args.f:
-        read_file()
+    #if args.f:
+        #read_file()
 
-    binary_multiplication(args.a, args.b)
+    result = binary_multiplication(args.a, args.b)
+
+    # Imprimir el resultado en diferentes bases
+
+    
+    decimal = int(result, 2)
+    hexadecimal = format(int(result), "x")
+    binario = int(result)
 
 
-init()
+    # Crear el archivo PDF
+    c = canvas.Canvas("Multiplicación.pdf", pagesize=landscape(letter))
+
+    #Primera diapositiva
+    c.setFontSize(24)
+    c.drawCentredString(5.5 * inch, 6.5 * inch, "Información obtenida")
+    c.drawCentredString(5.5 * inch, 4.5 * inch, f"Primer número: {args.a}")
+    c.drawCentredString(5.5 * inch, 3.5 * inch, f"Segundo número: {args.b}")
+    #c.drawCentredString(4.25 * inch, 7.5 * inch, f"Cantidad de bits: {args.bits}")
+    c.showPage()
+
+    #Segunda diapositiva
+    c.setFontSize(24)
+    c.drawCentredString(5.5 * inch, 7 * inch, "Multiplicación binaria")
+    c.drawCentredString(5.5 * inch, 5.5 * inch, f"Resultado en decimal: {decimal}")
+    c.drawCentredString(5.5 * inch, 4.5 * inch, f"Resultado en hexadecimal: {hexadecimal}")
+    c.drawCentredString(5.5 * inch, 3.5 * inch, f"Resultado en binario: {binario}")
+    c.showPage()
+
+    #Tercera diapositiva
+    c.setFontSize(20)
+    c.drawCentredString(5.5 * inch, 7.25 * inch, "Instituto Tecnológico de Costa Rica")
+    c.drawCentredString(5.5 * inch, 6.25 * inch, f"Integrantes:")
+    c.drawCentredString(5.5 * inch, 5.5 * inch, f"Bernal Zamora Barrantes")
+    c.drawCentredString(5.5 * inch, 5 * inch, f"David Pérez Calvo")
+    c.drawCentredString(5.5 * inch, 4.5 * inch, f"Carolina Zúñiga Blanco")
+    c.drawCentredString(5.5 * inch, 3.5 * inch, f"Curso: Diseño Lógico")
+    c.drawCentredString(5.5 * inch, 2.5 * inch, f"Curso: Grupo 3")
+    c.drawCentredString(5.5 * inch, 1.5 * inch, f"I Semestre")
+    c.drawCentredString(5.5 * inch, 0.5 * inch, f"2023")
+    c.showPage()
+
+    c.save()
+
+
